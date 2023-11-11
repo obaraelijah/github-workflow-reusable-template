@@ -7,3 +7,22 @@ on:
         - qa
         - staging
         - main
+
+jobs:
+  code_quality:
+    uses: obaraelijah/reusable-workflow-templates/.github/workflows/code_quality.yml@main
+    secrets: inherit
+  container_scan:
+    uses: obaraelijah/reusable-workflow-templates/.github/workflows/container_scan.yml@main
+    secrets: inherit
+  build_and_push_image:
+    uses: obaraelijah/reusable-workflow-templates/.github/workflows/build.yml@main
+#     needs: [code_quality, container_scan]
+    with:
+      GITHUB_REPOSITORY: ${GITHUB_REPOSITORY}
+      GITHUB_BASE_REF: ${GITHUB_BASE_REF}
+      GITHUB_SHA: ${GITHUB_SHA::8}
+      GITHUB_EVENT_NAME: ${GITHUB_EVENT_NAME}
+      USE_BUILDTIME_ARGS: true # toggle to use buildtime variables
+    secrets:
+      BUILDTIME_ARGS: ${{ secrets.DEV_SECRETS }} # if using buildtime variables, specify secrets in this format "${{ secrets.example }}"
