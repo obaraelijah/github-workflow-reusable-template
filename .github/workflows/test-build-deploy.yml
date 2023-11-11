@@ -1,0 +1,9 @@
+name: Test, Build, Deploy to Server 
+on:
+  pull_request:
+      types: [opened, synchronize, reopened, closed]
+      branches:
+        - dev
+        - qa
+        - staging
+        - main
