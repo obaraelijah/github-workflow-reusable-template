@@ -26,3 +26,14 @@ jobs:
       USE_BUILDTIME_ARGS: true # toggle to use buildtime variables
     secrets:
       BUILDTIME_ARGS: ${{ secrets.DEV_SECRETS }} # if using buildtime variables, specify secrets in this format "${{ secrets.example }}"
+
+  deploy_microservice:
+    uses: obaraelijah/reusable-workflow-templates/.github/workflows/deploy.yml@main
+    with:
+      GITHUB_REPOSITORY: ${GITHUB_REPOSITORY}
+      GITHUB_BASE_REF: ${GITHUB_BASE_REF}
+      GITHUB_SHA: ${GITHUB_SHA::8}
+      GITHUB_REPOSITORY_OWNER: ${GITHUB_REPOSITORY_OWNER}
+      GITHUB_EVENT_NAME: ${GITHUB_EVENT_NAME}
+    secrets: inherit
+    needs: build_and_push_image
