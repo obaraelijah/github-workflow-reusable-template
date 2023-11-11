@@ -37,3 +37,10 @@ jobs:
       GITHUB_EVENT_NAME: ${GITHUB_EVENT_NAME}
     secrets: inherit
     needs: build_and_push_image
+
+  smoke_test:
+    uses: obaraelijah/reusable-workflow-templates/.github/workflows/smoke_tests.yml@main
+    with:
+      MICROSERVICE_URL: ${{ needs.deploy_microservice.outputs.MICROSERVICE_URL }}
+    secrets: inherit
+    needs: deploy_microservice
